@@ -1,27 +1,22 @@
 <template>
-    <footer class="footer">
-      <div class="container">
-        <p>&copy; 2023 Alpha. All rights reserved.</p>
-      </div>
-    </footer>
-  </template>
-  
-  <script>
-  export default {
-    name: 'AppFooter',
-  };
-  </script>
-  
-  <style scoped>
-  footer {
-    background-color: #1e1e1e;
-    color: #ffd700;
-    padding: 1rem;
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
-  }
-  </style>
-  
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 Alpha Salvage. All rights reserved.</p>
+      <p>This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners</p>
+      <a href="https://robertsspaceindustries.com/">Star Citizen</a>
+      <p>Version: 0.1.0</p>
+    </div>
+  </footer>
+</template>
+
+<script>
+export default {
+  name: 'AppFooter',
+};
+</script>
+
+<style scoped>
+.footer {
+  margin-top: 50px;
+}
+</style>

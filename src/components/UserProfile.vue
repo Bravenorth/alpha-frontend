@@ -1,7 +1,7 @@
 <template>
   <div class="profile-page">
     <h1 class="page-title">User Profile</h1>
-    <div v-if="user">
+    <div v-if="user" class="card">
       <p><strong>Username:</strong> {{ user.username }}</p>
     </div>
   </div>
@@ -43,11 +43,6 @@ export default {
 
 .page-title {
   font-size: 2.5rem;
-  color: #ffd700;
-}
-
-p {
-  font-size: 1.2rem;
-  color: #f5f5f5;
+  margin-bottom: 20px;
 }
 </style>
