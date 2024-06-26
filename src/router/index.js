@@ -4,6 +4,8 @@ import UserProfile from '@/components/UserProfile.vue';
 import LoginPage from '@/components/LoginPage.vue';
 import RegisterPage from '@/components/RegisterPage.vue';
 import EditProfile from '@/components/EditProfile.vue';
+import ForgotPassword from '@/components/ForgotPassword.vue';
+import ResetPassword from '@/components/ResetPassword.vue';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -11,6 +13,8 @@ const routes = [
   { path: '/login', component: LoginPage },
   { path: '/register', component: RegisterPage },
   { path: '/edit-profile', component: EditProfile },
+  { path: '/forgot-password', component: ForgotPassword },
+  { path: '/reset-password/:token', component: ResetPassword },
 ];
 
 const router = createRouter({

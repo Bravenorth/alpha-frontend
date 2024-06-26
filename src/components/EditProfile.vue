@@ -1,59 +1,52 @@
 <template>
-    <div class="form-container">
-      <h1 class="page-title">Edit Profile</h1>
-      <form @submit.prevent="updateProfile">
-        <input type="text" v-model="name" placeholder="Name">
-        <input type="text" v-model="avatar" placeholder="Avatar URL">
-        <button type="submit">Save Changes</button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  import axios from '../axios';
-  import { useToast } from 'vue-toastification';
-  
-  export default {
-    name: 'EditProfile',
-    data() {
-      return {
+  <div class="form-container">
+    <h1 class="page-title">Edit Profile</h1>
+    <form @submit.prevent="updateProfile">
+      <input type="text" v-model="user.name" placeholder="Name" />
+      <input type="email" v-model="user.email" placeholder="Email" />
+      <input type="password" v-model="user.password" placeholder="Password" />
+      <input type="text" v-model="user.avatar" placeholder="Avatar URL" />
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import { useToast } from 'vue-toastification';
+
+export default {
+  name: 'EditProfile',
+  data() {
+    return {
+      user: {
         name: '',
-        avatar: '',
-      };
-    },
-    created() {
-      this.getUserProfile();
-    },
-    methods: {
-      getUserProfile() {
+        email: '',
+        password: '',
+        avatar: ''
+      }
+    };
+  },
+  methods: {
+    async updateProfile() {
+      const toast = useToast();
+      try {
         const token = localStorage.getItem('token');
-        axios.get('/profile', { headers: { Authorization: `Bearer ${token}` } })
-          .then(response => {
-            this.name = response.data.user.name;
-            this.avatar = response.data.user.avatar;
-          })
-          .catch(error => {
-            console.error('Failed to fetch user profile:', error);
-          });
-      },
-      updateProfile() {
-        const toast = useToast();
-        const token = localStorage.getItem('token');
-        axios.patch('/updateMe', { name: this.name, avatar: this.avatar }, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(() => {
-          toast.success('Profile updated successfully');
-        })
-        .catch((error) => {
-          toast.error('Profile update failed: ' + error.message);
+        // eslint-disable-next-line no-unused-vars
+        const response = await axios.patch('http://localhost:5000/api/v1/auth/updateMe', this.user, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
-  /* Vos styles existants */
-  </style>
-  
+        toast.success('Profile updated successfully!');
+      } catch (error) {
+        toast.error('Failed to update profile: ' + error.response.data.message);
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* Ajoutez vos styles ici */
+</style>
