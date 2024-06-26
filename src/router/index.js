@@ -1,31 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '../components/HomePage.vue';
-import UserProfile from '../components/UserProfile.vue';
-import LoginPage from '../components/LoginPage.vue';
-import RegisterPage from '../components/RegisterPage.vue';
+import HomePage from '@/components/HomePage.vue';
+import UserProfile from '@/components/UserProfile.vue';
+import LoginPage from '@/components/LoginPage.vue';
+import RegisterPage from '@/components/RegisterPage.vue';
+import EditProfile from '@/components/EditProfile.vue';
 
 const routes = [
-  {
-    path: '/',
-    name: 'HomePage',
-    component: HomePage,
-  },
-  {
-    path: '/profile',
-    name: 'UserProfile',
-    component: UserProfile,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/login',
-    name: 'LoginPage',
-    component: LoginPage,
-  },
-  {
-    path: '/register',
-    name: 'RegisterPage',
-    component: RegisterPage,
-  },
+  { path: '/', component: HomePage },
+  { path: '/profile', component: UserProfile },
+  { path: '/login', component: LoginPage },
+  { path: '/register', component: RegisterPage },
+  { path: '/edit-profile', component: EditProfile },
 ];
 
 const router = createRouter({

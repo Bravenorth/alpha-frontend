@@ -3,6 +3,9 @@
     <h1 class="page-title">User Profile</h1>
     <div v-if="user" class="card">
       <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <img :src="user.avatar" alt="Avatar" v-if="user.avatar">
+      <router-link to="/edit-profile" class="btn">Edit Profile</router-link>
     </div>
   </div>
 </template>
@@ -36,13 +39,5 @@ export default {
 </script>
 
 <style scoped>
-.profile-page {
-  text-align: center;
-  margin-top: 100px;
-}
-
-.page-title {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
+/* Vos styles existants */
 </style>
