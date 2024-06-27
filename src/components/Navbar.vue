@@ -1,14 +1,15 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="info">
+  <b-navbar toggleable="lg" type="dark" variant="dark">
     <b-navbar-brand href="#">Alpha Salvage</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item to="/">Home</b-nav-item>
-        <b-nav-item v-if="isAuthenticated" to="/scrapping-tool">Scrapping Tool</b-nav-item>
-        <b-nav-item v-if="isAuthenticated" to="/profile">Profile</b-nav-item>
+        <b-nav-item v-if="isAuthenticated" to="/dashboard">Dashboard</b-nav-item>
         <b-nav-item v-if="!isAuthenticated" to="/login">Login</b-nav-item>
         <b-nav-item v-if="!isAuthenticated" to="/register">Register</b-nav-item>
+        <b-nav-item v-if="isAuthenticated" to="/profile">Profile</b-nav-item>
+        <b-nav-item v-if="isAuthenticated" to="/Scrapping-tool">Scrapping-tool</b-nav-item>
         <b-nav-item v-if="isAuthenticated" @click="logout">Logout</b-nav-item>
       </b-navbar-nav>
     </b-collapse>

@@ -7,16 +7,18 @@ import EditProfile from '@/components/EditProfile.vue';
 import ForgotPassword from '@/components/ForgotPassword.vue';
 import ResetPassword from '@/components/ResetPassword.vue';
 import ScrappingToolPage from '@/components/ScrappingToolPage.vue';
+import Dashboard from '@/components/Dashboard.vue';
 
 const routes = [
   { path: '/', component: HomePage },
-  { path: '/profile', component: UserProfile, meta: { requiresAuth: true } },
+  { path: '/profile', component: UserProfile },
   { path: '/login', component: LoginPage },
   { path: '/register', component: RegisterPage },
-  { path: '/edit-profile', component: EditProfile, meta: { requiresAuth: true } },
+  { path: '/edit-profile', component: EditProfile },
   { path: '/forgot-password', component: ForgotPassword },
   { path: '/reset-password/:token', component: ResetPassword },
-  { path: '/scrapping-tool', component: ScrappingToolPage, meta: { requiresAuth: true } },
+  { path: '/scrapping-tool', component: ScrappingToolPage },
+  { path: '/dashboard', component: Dashboard },
 ];
 
 const router = createRouter({
@@ -25,9 +27,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  if (to.matched.some(record => record.meta.requiresAuth) && !token) {
-    next('/login');
+  const isAuthenticated = !!localStorage.getItem('token');
+  if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+    next({ name: 'LoginPage' });
   } else {
     next();
   }

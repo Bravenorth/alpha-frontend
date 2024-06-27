@@ -13,8 +13,10 @@
     "bootstrap": "^5.2.3",
     "bootstrap-vue": "^2.21.2",
     "bootstrap-vue-3": "^0.3.12",
+    "chart.js": "^4.4.3",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
+    "vue-chartjs": "^5.3.1",
     "vue-router": "^4.0.0",
     "vue-toastification": "^2.0.0-rc.3"
   },
