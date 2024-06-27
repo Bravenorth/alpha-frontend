@@ -14,8 +14,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/axios'; // Utilisez l'instance Axios globale
 import eventBus from '../eventBus';
+import { useToast } from 'vue-toastification';
 
 export default {
   data() {
@@ -26,13 +27,19 @@ export default {
   },
   methods: {
     async login() {
-      const response = await axios.post('/api/v1/auth/login', {
-        username: this.username,
-        password: this.password,
-      });
-      localStorage.setItem('token', response.data.token);
-      eventBus.emit('login');
-      this.$router.push('/');
+      const toast = useToast();
+      try {
+        const response = await axios.post('/login', {
+          username: this.username,
+          password: this.password,
+        });
+        localStorage.setItem('token', response.data.token);
+        eventBus.emit('login');
+        toast.success('Login successful!');
+        this.$router.push('/');
+      } catch (error) {
+        toast.error(`Failed to login: ${error.response?.data?.message || error.message}`);
+      }
     },
   },
 };

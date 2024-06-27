@@ -31,7 +31,16 @@
         entries: [],
       };
     },
+    created() {
+      this.checkAuth();
+    },
     methods: {
+      checkAuth() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          this.$router.push('/login');
+        }
+      },
       submitEntry() {
         this.entries.push({ ...this.form });
         this.resetForm();
@@ -52,4 +61,8 @@
     },
   };
   </script>
+  
+  <style scoped>
+  /* Ajoutez vos styles ici */
+  </style>
   

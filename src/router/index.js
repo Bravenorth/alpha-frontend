@@ -10,13 +10,13 @@ import ScrappingToolPage from '@/components/ScrappingToolPage.vue';
 
 const routes = [
   { path: '/', component: HomePage },
-  { path: '/profile', component: UserProfile },
+  { path: '/profile', component: UserProfile, meta: { requiresAuth: true } },
   { path: '/login', component: LoginPage },
   { path: '/register', component: RegisterPage },
-  { path: '/edit-profile', component: EditProfile },
+  { path: '/edit-profile', component: EditProfile, meta: { requiresAuth: true } },
   { path: '/forgot-password', component: ForgotPassword },
   { path: '/reset-password/:token', component: ResetPassword },
-  { path: '/scrapping-tool', component: ScrappingToolPage },
+  { path: '/scrapping-tool', component: ScrappingToolPage, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
@@ -25,9 +25,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('token');
-  if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
-    next({ path: '/login' });
+  const token = localStorage.getItem('token');
+  if (to.matched.some(record => record.meta.requiresAuth) && !token) {
+    next('/login');
   } else {
     next();
   }

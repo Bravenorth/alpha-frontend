@@ -1,35 +1,246 @@
-body {
-  background-color: #f8f9fa;
-  font-family: 'Arial', sans-serif;
+/* Reset some default browser styles */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* General styling for the body */
+body {
+  background-color: #302f2f;
+  font-family: 'Arial', sans-serif;
+  color: #ffd700;
+  line-height: 1.6;
+}
+
+/* Container to center content */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
+/* Navbar styling */
 .navbar {
   background-color: #343a40 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 1rem;
 }
 
 .navbar-brand {
   color: #ffd700 !important;
+  font-weight: bold;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #ffcc33 !important;
 }
 
 .nav-link {
   color: #ffd700 !important;
+  margin-right: 15px;
+  transition: color 0.3s ease;
 }
 
+.nav-link:hover {
+  color: #ffcc33 !important;
+}
+
+.navbar-toggler {
+  border-color: #ffd700 !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%288, 8, 8, 0.5%29' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Button styling */
 .btn-primary {
   background-color: #ffd700 !important;
   border-color: #ffd700 !important;
   color: #343a40 !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+.btn-primary:hover {
+  background-color: #ffcc33 !important;
+  border-color: #ffcc33 !important;
+}
+
+/* Jumbotron styling */
 .jumbotron {
   background-color: #343a40 !important;
   color: #ffd700 !important;
+  padding: 2rem 1rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+/* Form styling */
+form .form-group {
+  margin-bottom: 1rem;
+}
+
+form .form-control {
+  border-radius: 0.3rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form .form-control:focus {
+  border-color: #ffd700;
+  box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+/* General utility classes */
+.mt-5 {
+  margin-top: 3rem !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+/* Footer styling */
+.footer {
+  background-color: #343a40;
+  color: #ffd700;
+  text-align: center;
+  padding: 1rem 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Card styling */
+.card {
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  background-color: #343a40;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.card-body {
+  background-color: #ffffff;
+}
+
+/* Table styling */
+.table {
+  background-color: #ffffff;
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  background-color: #343a40;
+  color: #ffd700;
+  border: none;
+}
+
+.table td {
+  border: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #343a40;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffd700;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+
+  .nav-link {
+    margin-right: 10px;
+  }
+
+  .jumbotron {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer {
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+  }
+}
+
+/* Additional custom styles */
+.card {
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  background-color: #343a40;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.card-body {
+  background-color: #ffffff;
+}
+
+.table {
+  background-color: #ffffff;
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  background-color: #343a40;
+  color: #ffd700;
+  border: none;
+}
+
+.table td {
+  border: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #343a40;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffd700;
 }
