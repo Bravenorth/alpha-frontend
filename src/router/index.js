@@ -6,6 +6,7 @@ import RegisterPage from '@/components/RegisterPage.vue';
 import EditProfile from '@/components/EditProfile.vue';
 import ForgotPassword from '@/components/ForgotPassword.vue';
 import ResetPassword from '@/components/ResetPassword.vue';
+import ScrappingToolPage from '@/components/ScrappingToolPage.vue';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -15,6 +16,7 @@ const routes = [
   { path: '/edit-profile', component: EditProfile },
   { path: '/forgot-password', component: ForgotPassword },
   { path: '/reset-password/:token', component: ResetPassword },
+  { path: '/scrapping-tool', component: ScrappingToolPage },
 ];
 
 const router = createRouter({
@@ -25,7 +27,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem('token');
   if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
-    next({ name: 'LoginPage' });
+    next({ path: '/login' });
   } else {
     next();
   }

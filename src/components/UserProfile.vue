@@ -1,50 +1,35 @@
 <template>
-  <div class="profile-page">
-    <h1 class="page-title">User Profile</h1>
-    <div v-if="user" class="card">
-      <p><strong>Username:</strong> {{ user.username }}</p>
-      <p><strong>Name:</strong> {{ user.name }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <img :src="user.avatar" alt="Avatar" v-if="user.avatar">
-      <router-link to="/edit-profile" class="btn">Edit Profile</router-link>
-      <router-link to="/forgot-password" class="btn btn-secondary">Reset Password</router-link>
-    </div>
+  <div class="container mt-5">
+    <h2>User Profile</h2>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <b-button variant="primary" @click="goToEditProfile">Edit Profile</b-button>
   </div>
 </template>
 
 <script>
-import axios from '../axios';
+import axios from 'axios';
 
 export default {
-  name: 'UserProfile',
   data() {
     return {
-      user: null,
+      user: {},
     };
   },
   created() {
-    this.getUserProfile();
+    this.fetchUser();
   },
   methods: {
-    getUserProfile() {
+    async fetchUser() {
       const token = localStorage.getItem('token');
-      if (token) {
-        axios.get('/profile', { headers: { Authorization: `Bearer ${token}` } })
-          .then(response => {
-            this.user = response.data.data.user; // Assurez-vous que cette ligne correspond à la structure de la réponse
-          })
-          .catch(error => {
-            console.error('Failed to fetch user profile:', error);
-            this.$router.push('/login');
-          });
-      } else {
-        this.$router.push('/login');
-      }
+      const response = await axios.get('/api/v1/auth/profile', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      this.user = response.data.data.user;
+    },
+    goToEditProfile() {
+      this.$router.push('/edit-profile');
     },
   },
 };
 </script>
-
-<style scoped>
-/* Vos styles existants */
-</style>

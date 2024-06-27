@@ -1,21 +1,23 @@
 <template>
-  <div class="form-container">
-    <h1 class="page-title">Login</h1>
-    <form @submit.prevent="login">
-      <input type="text" v-model="username" placeholder="Username" required>
-      <input type="password" v-model="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
-    <router-link to="/forgot-password" class="forgot-password-link">Forgot Password?</router-link>
+  <div class="container mt-5">
+    <h2>Login</h2>
+    <b-form @submit.prevent="login">
+      <b-form-group label="Username">
+        <b-form-input v-model="username" required></b-form-input>
+      </b-form-group>
+      <b-form-group label="Password">
+        <b-form-input type="password" v-model="password" required></b-form-input>
+      </b-form-group>
+      <b-button type="submit" variant="primary">Login</b-button>
+    </b-form>
   </div>
 </template>
 
 <script>
-import axios from '../axios';
-import { useToast } from 'vue-toastification';
+import axios from 'axios';
+import eventBus from '../eventBus';
 
 export default {
-  name: 'LoginPage',
   data() {
     return {
       username: '',
@@ -23,29 +25,15 @@ export default {
     };
   },
   methods: {
-    login() {
-      const toast = useToast();
-      axios.post('/login', {
+    async login() {
+      const response = await axios.post('/api/v1/auth/login', {
         username: this.username,
         password: this.password,
-      })
-        .then(response => {
-          localStorage.setItem('token', response.data.token);
-          toast.success('Login successful!');
-          this.$router.push('/profile');
-        })
-        .catch(error => {
-          toast.error('Login failed: ' + error.message);
-        });
+      });
+      localStorage.setItem('token', response.data.token);
+      eventBus.emit('login');
+      this.$router.push('/');
     },
   },
 };
 </script>
-
-<style scoped>
-.forgot-password-link {
-  display: block;
-  margin-top: 10px;
-  text-align: right;
-}
-</style>

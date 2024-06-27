@@ -1,21 +1,25 @@
 <template>
-  <div class="form-container">
-    <h1 class="page-title">Register</h1>
-    <form @submit.prevent="register">
-      <input type="text" v-model="username" placeholder="Username" required>
-      <input type="email" v-model="email" placeholder="Email" required>
-      <input type="password" v-model="password" placeholder="Password" required>
-      <button type="submit">Register</button>
-    </form>
+  <div class="container mt-5">
+    <h2>Register</h2>
+    <b-form @submit.prevent="register">
+      <b-form-group label="Username">
+        <b-form-input v-model="username" required></b-form-input>
+      </b-form-group>
+      <b-form-group label="Email">
+        <b-form-input type="email" v-model="email" required></b-form-input>
+      </b-form-group>
+      <b-form-group label="Password">
+        <b-form-input type="password" v-model="password" required></b-form-input>
+      </b-form-group>
+      <b-button type="submit" variant="primary">Register</b-button>
+    </b-form>
   </div>
 </template>
 
 <script>
-import axios from '../axios';
-import { useToast } from 'vue-toastification';
+import axios from 'axios';
 
 export default {
-  name: 'RegisterPage',
   data() {
     return {
       username: '',
@@ -24,26 +28,14 @@ export default {
     };
   },
   methods: {
-  register() {
-    const toast = useToast();
-    axios.post('/signup', {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-    })
-      .then(() => { // Suppression de la variable response
-        toast.success('Registration successful!');
-        this.$router.push('/login');
-      })
-      .catch(error => {
-        toast.error('Registration failed: ' + error.message);
+    async register() {
+      await axios.post('/api/v1/auth/signup', {
+        username: this.username,
+        email: this.email,
+        password: this.password,
       });
+      this.$router.push('/login');
+    },
   },
-}
-
 };
 </script>
-
-<style scoped>
-/* Vos styles existants */
-</style>
