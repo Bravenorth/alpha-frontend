@@ -22,7 +22,7 @@
         </b-col>
         <b-col md="6">
           <b-form-group label="Ship to salvage">
-            <b-form-input v-model="localForm.shipToSalvage" required @input="emitChange('shipToSalvage', localForm.shipToSalvage)"></b-form-input>
+            <b-form-select v-model="localForm.shipToSalvage" :options="shipOptions" required @change="emitChange('shipToSalvage', localForm.shipToSalvage)"></b-form-select>
           </b-form-group>
         </b-col>
       </b-row>
@@ -65,11 +65,10 @@
           </b-form-group>
         </b-col>
       </b-row>
-      
-      <b-form-group label="Comments">
-  <b-form-textarea v-model="localForm.comments" @input="emitChange('comments', localForm.comments)" rows="3"></b-form-textarea>
-</b-form-group>
 
+      <b-form-group label="Comments">
+        <b-form-textarea v-model="localForm.comments" @input="emitChange('comments', localForm.comments)" rows="3"></b-form-textarea>
+      </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
@@ -77,11 +76,14 @@
 </template>
 
 <script>
+import { ships } from '@/ships.js';
+
 export default {
   props: ['form'],
   data() {
     return {
-      localForm: { ...this.form }
+      localForm: { ...this.form },
+      shipOptions: ships.map(ship => ({ value: ship.slug, text: ship.name })),
     };
   },
   methods: {
@@ -98,8 +100,8 @@ export default {
         this.localForm = { ...newForm };
       },
       deep: true,
-      immediate: true
-    }
-  }
+      immediate: true,
+    },
+  },
 };
 </script>
