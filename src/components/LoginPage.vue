@@ -34,6 +34,7 @@ export default {
           password: this.password,
         });
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userName', this.username);
         eventBus.emit('login');
         toast.success('Login successful!');
         this.$router.push('/');

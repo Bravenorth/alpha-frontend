@@ -7,15 +7,7 @@
             <b-form-checkbox v-model="localForm.isContract" @change="emitChange('isContract', localForm.isContract)"></b-form-checkbox>
           </b-form-group>
         </b-col>
-        <b-col md="6">
-          <b-form-group label="Position">
-            <b-form-input v-model="localForm.position" required @input="emitChange('position', localForm.position)"></b-form-input>
-          </b-form-group>
-        </b-col>
-      </b-row>
-
-      <b-row v-if="localForm.isContract">
-        <b-col md="6">
+        <b-col md="6" v-if="localForm.isContract">
           <b-form-group label="Contract Price">
             <b-form-input v-model="localForm.contractPrice" required @input="emitChange('contractPrice', localForm.contractPrice)"></b-form-input>
           </b-form-group>
@@ -24,29 +16,37 @@
 
       <b-row>
         <b-col md="6">
-          <b-form-group label="Ship to salvage">
-            <b-form-input v-model="localForm.shipToSalvage" required @input="emitChange('shipToSalvage', localForm.shipToSalvage)"></b-form-input>
+          <b-form-group label="Position">
+            <b-form-input v-model="localForm.position" required @input="emitChange('position', localForm.position)"></b-form-input>
           </b-form-group>
         </b-col>
         <b-col md="6">
-          <b-form-group label="Hour contract accepted">
-            <b-form-input type="time" v-model="localForm.hourContractAccepted" required @input="emitChange('hourContractAccepted', localForm.hourContractAccepted)"></b-form-input>
+          <b-form-group label="Ship to salvage">
+            <b-form-input v-model="localForm.shipToSalvage" required @input="emitChange('shipToSalvage', localForm.shipToSalvage)"></b-form-input>
           </b-form-group>
         </b-col>
       </b-row>
 
       <b-row>
-        <b-col md="4">
+        <b-col md="6">
+          <b-form-group label="Hour contract accepted">
+            <b-form-input type="time" v-model="localForm.hourContractAccepted" required @input="emitChange('hourContractAccepted', localForm.hourContractAccepted)"></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col md="6">
           <b-form-group label="Hour scrapping started">
             <b-form-input type="time" v-model="localForm.hourScrappingStarted" required @input="emitChange('hourScrappingStarted', localForm.hourScrappingStarted)"></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col md="4">
+      </b-row>
+
+      <b-row>
+        <b-col md="6">
           <b-form-group label="Ship in use to scrap">
             <b-form-input v-model="localForm.shipInUseToScrap" required @input="emitChange('shipInUseToScrap', localForm.shipInUseToScrap)"></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col md="4">
+        <b-col md="6">
           <b-form-group label="Hour scrapping ended">
             <b-form-input type="time" v-model="localForm.hourScrappingEnded" required @input="emitChange('hourScrappingEnded', localForm.hourScrappingEnded)"></b-form-input>
           </b-form-group>
@@ -65,6 +65,11 @@
           </b-form-group>
         </b-col>
       </b-row>
+      
+      <b-form-group label="Comments">
+  <b-form-textarea v-model="localForm.comments" @input="emitChange('comments', localForm.comments)" rows="3"></b-form-textarea>
+</b-form-group>
+
 
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
