@@ -203,4 +203,4 @@ export const ships = [
     { name: 'Zeus Mk II CL', slug: 'zeus-mk-ii-cl' },
     { name: 'Zeus Mk II ES', slug: 'zeus-mk-ii-es' },
     { name: 'Zeus Mk II MR', slug: 'zeus-mk-ii-mr' },
-    ]
+]

@@ -1,124 +1,122 @@
 <template>
-  <div class="container mt-5">
-    <h2>Scrapping Tool</h2>
-    <EntryForm v-model:form="form" @submit="submitEntry" />
-    <HistoryTable :entries="entries" @edit-entry="loadEntry" @delete-entry="deleteEntry" />
-    <b-button @click="downloadCSV" variant="secondary">Download CSV</b-button>
-    <b-button @click="downloadPDF" variant="secondary">Download PDF</b-button>
-  </div>
+  <b-container class="mt-5">
+    <b-form @submit.prevent="onSubmit">
+      <b-row>
+        <b-col md="6">
+          <b-form-group label="Is Contract">
+            <b-form-checkbox v-model="localForm.isContract"></b-form-checkbox>
+          </b-form-group>
+        </b-col>
+        <b-col md="6" v-if="localForm.isContract">
+          <b-form-group label="Contract Price">
+            <b-form-input v-model="localForm.contractPrice" required :disabled="!localForm.isContract"></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col md="6">
+          <b-form-group label="Position">
+            <b-form-input v-model="localForm.position" required></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col md="6">
+          <b-form-group label="Ship to salvage">
+            <b-form-select v-model="localForm.shipToSalvage" required>
+              <option :value="null" disabled>Select a ship</option>
+              <option v-for="ship in ships" :key="ship.slug" :value="ship.name">{{ ship.name }}</option>
+            </b-form-select>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col md="6">
+          <b-form-group label="Hour contract accepted">
+            <b-form-input type="time" v-model="localForm.hourContractAccepted" required></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col md="6">
+          <b-form-group label="Hour scrapping started">
+            <b-form-input type="time" v-model="localForm.hourScrappingStarted" required></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col md="6">
+          <b-form-group label="Ship in use to scrap">
+            <b-form-input v-model="localForm.shipInUseToScrap" required></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col md="6">
+          <b-form-group label="Hour scrapping ended">
+            <b-form-input type="time" v-model="localForm.hourScrappingEnded" required></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col md="6">
+          <b-form-group label="Amount RMC gathered">
+            <b-form-input v-model="localForm.amountRMC" required></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col md="6">
+          <b-form-group label="Amount CM gathered">
+            <b-form-input v-model="localForm.amountCM" required></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <b-form-group label="Comments">
+        <b-form-textarea v-model="localForm.comments"></b-form-textarea>
+      </b-form-group>
+
+      <b-button type="submit" variant="primary" :disabled="!isFormValid()">Submit</b-button>
+    </b-form>
+
+    <hr>
+
+    <h2>History</h2>
+    <b-table striped hover :items="history" :fields="fields">
+      <template #cell(actions)="row">
+        <b-button size="sm" @click="editEntry(row.item)">Edit</b-button>
+        <b-button size="sm" variant="danger" @click="deleteEntry(row.item)">Delete</b-button>
+      </template>
+    </b-table>
+  </b-container>
 </template>
 
 <script>
-import EntryForm from './EntryForm.vue';
-import HistoryTable from './HistoryTable.vue';
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
-
+import { ships } from '@/ships.js';
 export default {
-  components: {
-    EntryForm,
-    HistoryTable,
-  },
+
   data() {
     return {
-      form: {
-        isContract: false,
-        contractPrice: '',
-        position: '',
-        shipToSalvage: '',
-        hourContractAccepted: '',
-        hourScrappingStarted: '',
-        shipInUseToScrap: '',
-        hourScrappingEnded: '',
-        amountRMC: '',
-        amountCM: '',
-        comments: '',
-      },
-      entries: [],
-      editingIndex: -1,
+      localForm: this.getInitialFormState(),
+      ships: ships,
+      history: [],
+      editingIndex: null,
+      fields: [
+        { key: 'isContract', label: 'Is Contract' },
+        { key: 'contractPrice', label: 'Contract Price' },
+        { key: 'position', label: 'Position' },
+        { key: 'shipToSalvage', label: 'Ship to Salvage' },
+        { key: 'hourContractAccepted', label: 'Hour Contract Accepted' },
+        { key: 'hourScrappingStarted', label: 'Hour Scrapping Started' },
+        { key: 'shipInUseToScrap', label: 'Ship in Use to Scrap' },
+        { key: 'hourScrappingEnded', label: 'Hour Scrapping Ended' },
+        { key: 'amountRMC', label: 'Amount RMC Gathered' },
+        { key: 'amountCM', label: 'Amount CM Gathered' },
+        { key: 'comments', label: 'Comments' },
+        { key: 'actions', label: 'Actions' },
+      ],
     };
   },
   methods: {
-    downloadCSV() {
-      const csvContent = "data:text/csv;charset=utf-8," 
-        + ["Date,User,Is Contract,Contract Price,Position,Ship to Salvage,Hour Contract Accepted,Hour Scrapping Started,Ship in Use to Scrap,Hour Scrapping Ended,Amount RMC,Amount CM,Comments"].join(",") + "\n"
-        + this.entries.map(e => [
-          e.date,
-          e.user,
-          e.isContract,
-          e.contractPrice,
-          e.position,
-          e.shipToSalvage,
-          e.hourContractAccepted,
-          e.hourScrappingStarted,
-          e.shipInUseToScrap,
-          e.hourScrappingEnded,
-          e.amountRMC,
-          e.amountCM,
-          e.comments
-        ].join(",")).join("\n");
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "scrapping_data.csv");
-      document.body.appendChild(link); // Requis pour Firefox
-      link.click();
-    },
-    downloadPDF() {
-      const doc = new jsPDF();
-      doc.autoTable({
-        head: [['Date', 'User', 'Is Contract', 'Contract Price', 'Position', 'Ship to Salvage', 'Hour Contract Accepted', 'Hour Scrapping Started', 'Ship in Use to Scrap', 'Hour Scrapping Ended', 'Amount RMC', 'Amount CM', 'Comments']],
-        body: this.entries.map(e => [
-          e.date,
-          e.user,
-          e.isContract,
-          e.contractPrice,
-          e.position,
-          e.shipToSalvage,
-          e.hourContractAccepted,
-          e.hourScrappingStarted,
-          e.shipInUseToScrap,
-          e.hourScrappingEnded,
-          e.amountRMC,
-          e.amountCM,
-          e.comments
-        ]),
-      });
-      doc.save('scrapping_data.pdf');
-    },
-    submitEntry() {
-      const todayDate = new Date().toISOString().substr(0, 10); // Obtenir la date du jour au format AAAA-MM-JJ
-      const userName = localStorage.getItem('userName'); // Récupérer le nom de l'utilisateur depuis localStorage
-      const newEntry = {
-        ...this.form,
-        date: todayDate,
-        user: userName, // Ajouter le nom de l'utilisateur à l'entrée
-        contractPrice: this.form.isContract ? this.form.contractPrice : '',
-      };
-
-      // Ajouter une vérification pour s'assurer qu'aucune entrée vide n'est ajoutée
-      if (
-        this.form.position &&
-        this.form.shipToSalvage &&
-        this.form.hourContractAccepted &&
-        this.form.hourScrappingStarted &&
-        this.form.shipInUseToScrap &&
-        this.form.hourScrappingEnded &&
-        this.form.amountRMC &&
-        this.form.amountCM
-      ) {
-        if (this.editingIndex === -1) {
-          this.entries.push(newEntry);
-        } else {
-          this.entries.splice(this.editingIndex, 1, newEntry);
-          this.editingIndex = -1;
-        }
-      }
-
-      this.resetForm();
-    },
-    resetForm() {
-      this.form = {
+    getInitialFormState() {
+      return {
         isContract: false,
         contractPrice: '',
         position: '',
@@ -132,15 +130,45 @@ export default {
         comments: '',
       };
     },
-    loadEntry(entry) {
-      this.form = { ...entry };
-      this.editingIndex = this.entries.indexOf(entry);
+    onSubmit() {
+      if (this.isFormValid()) {
+        const newEntry = { ...this.localForm };
+        if (this.editingIndex !== null) {
+          this.history.splice(this.editingIndex, 1, newEntry);
+          this.editingIndex = null;
+        } else {
+          this.history.push(newEntry);
+        }
+        this.resetForm();
+      }
+    },
+    isFormValid() {
+      const requiredFields = [
+        'position',
+        'shipToSalvage',
+        'hourContractAccepted',
+        'hourScrappingStarted',
+        'shipInUseToScrap',
+        'hourScrappingEnded',
+        'amountRMC',
+        'amountCM',
+      ];
+
+      if (this.localForm.isContract) {
+        requiredFields.push('contractPrice');
+      }
+
+      return requiredFields.every(field => this.localForm[field]);
+    },
+    resetForm() {
+      this.localForm = this.getInitialFormState();
+    },
+    editEntry(entry) {
+      this.localForm = { ...entry };
+      this.editingIndex = this.history.indexOf(entry);
     },
     deleteEntry(entry) {
-      const index = this.entries.indexOf(entry);
-      if (index !== -1) {
-        this.entries.splice(index, 1);
-      }
+      this.history = this.history.filter(item => item !== entry);
     },
   },
 };
