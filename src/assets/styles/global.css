@@ -1,3 +1,15 @@
+:root {
+  --background-color: #302f2f;
+  --navbar-color: #343a40;
+  --primary-color: #ffd700;
+  --secondary-color: #ffcc33;
+  --table-header-bg: #23272b;
+  --table-cell-bg: #5c6064;
+  --table-hover-bg: #79797a;
+  --text-color: #ffd700;
+  --border-color: #343a40;
+}
+
 /* Reset some default browser styles */
 * {
   margin: 0;
@@ -7,9 +19,9 @@
 
 /* General styling for the body */
 body {
-  background-color: #302f2f;
+  background-color: var(--background-color);
   font-family: 'Arial', sans-serif;
-  color: #ffd700;
+  color: var(--text-color);
   line-height: 1.6;
 }
 
@@ -22,34 +34,38 @@ body {
 
 /* Navbar styling */
 .navbar {
-  background-color: #343a40 !important;
+  background-color: var(--navbar-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 0.75rem 1rem;
 }
 
 .navbar-brand {
-  color: #ffd700 !important;
+  color: var(--primary-color);
   font-weight: bold;
   font-size: 1.5rem;
   transition: color 0.3s ease;
 }
 
 .navbar-brand:hover {
-  color: #ffcc33 !important;
+  color: var(--secondary-color);
 }
 
 .nav-link {
-  color: #ffd700 !important;
+  color: var(--primary-color);
   margin-right: 15px;
   transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #ffcc33 !important;
+  color: var(--secondary-color);
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .show>.nav-link {
+  color: rgb(255 241 168 / 90%);
 }
 
 .navbar-toggler {
-  border-color: #ffd700 !important;
+  border-color: var(--primary-color);
 }
 
 .navbar-toggler-icon {
@@ -58,21 +74,21 @@ body {
 
 /* Button styling */
 .btn-primary {
-  background-color: #ffd700 !important;
-  border-color: #ffd700 !important;
-  color: #343a40 !important;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--navbar-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .btn-primary:hover {
-  background-color: #ffcc33 !important;
-  border-color: #ffcc33 !important;
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
 }
 
 /* Jumbotron styling */
 .jumbotron {
-  background-color: #343a40 !important;
-  color: #ffd700 !important;
+  background-color: var(--navbar-color);
+  color: var(--primary-color);
   padding: 2rem 1rem;
   border-radius: 0.3rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -91,7 +107,7 @@ form .form-control {
 }
 
 form .form-control:focus {
-  border-color: #ffd700;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
 }
 
@@ -110,8 +126,8 @@ form .form-control:focus {
 
 /* Footer styling */
 .footer {
-  background-color: #343a40;
-  color: #ffd700;
+  background-color: var(--navbar-color);
+  color: var(--primary-color);
   text-align: center;
   padding: 1rem 0;
   position: fixed;
@@ -129,8 +145,8 @@ form .form-control:focus {
 }
 
 .card-header {
-  background-color: #343a40;
-  color: #ffd700;
+  background-color: var(--navbar-color);
+  color: var(--primary-color);
   font-weight: bold;
 }
 
@@ -138,95 +154,48 @@ form .form-control:focus {
   background-color: #ffffff;
 }
 
-/* Table styling */
+/* General Table Styling */
 .table {
-  background-color: #ffffff;
+  background-color: var(--navbar-color);
   border-radius: 0.3rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+  width: 100%;
+  border-collapse: separate;
 }
 
+/* Table Header Styling */
 .table th {
-  background-color: #343a40;
-  color: #ffd700;
+  background-color: var(--table-header-bg);
+  color: var(--primary-color);
   border: none;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
 }
 
+/* Table Body Cell Styling */
 .table td {
-  border: none;
+  border: var(--table-border);
+  background-color: var(--table-cell-bg);
+  padding: 0.75rem 1rem;
+  color: var(--text-color);
+  text-align: center;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 12px;
+/* Table Hover Effect */
+.table-hover tbody tr:hover {
+  background-color: var(--table-hover-bg);
+  color: var(--primary-color);
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #343a40;
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #ffd700;
-}
-
-/* Responsive styling */
+/* Responsive Table Styling */
 @media (max-width: 768px) {
-  .navbar-brand {
-    font-size: 1.25rem;
-  }
-
-  .nav-link {
-    margin-right: 10px;
-  }
-
-  .jumbotron {
-    padding: 1.5rem 1rem;
-  }
-
-  .footer {
-    padding: 0.5rem 0;
+  .table {
     font-size: 0.875rem;
   }
 }
 
-/* Additional custom styles */
-.card {
-  border-radius: 0.3rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: none;
-  margin-bottom: 2rem;
-}
-
-.card-header {
-  background-color: #343a40;
-  color: #ffd700;
-  font-weight: bold;
-}
-
-.card-body {
-  background-color: #ffffff;
-}
-
-.table {
-  background-color: #ffffff;
-  border-radius: 0.3rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.table th {
-  background-color: #343a40;
-  color: #ffd700;
-  border: none;
-}
-
-.table td {
-  border: none;
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 12px;
@@ -237,10 +206,10 @@ form .form-control:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #343a40;
+  background: var(--navbar-color);
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffd700;
+  background: var(--primary-color);
 }
