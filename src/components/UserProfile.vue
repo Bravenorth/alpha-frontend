@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from '@/axios'; // Utilisez l'instance Axios globale
+import { authAxios } from '@/axios';
 import { useToast } from 'vue-toastification';
 
 export default {
@@ -30,7 +30,7 @@ export default {
       const toast = useToast();
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/profile', {
+        const response = await authAxios.get('/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

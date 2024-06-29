@@ -1,6 +1,7 @@
 <template>
   <b-container class="mt-5">
     <b-form @submit.prevent="onSubmit">
+      <!-- Form Fields -->
       <b-row>
         <b-col md="6">
           <b-form-group label="Is Contract">
@@ -89,9 +90,10 @@
 </template>
 
 <script>
+import { scrappingAxios } from '@/axios';
 import { ships } from '@/ships.js';
-export default {
 
+export default {
   data() {
     return {
       localForm: this.getInitialFormState(),
@@ -99,6 +101,8 @@ export default {
       history: [],
       editingIndex: null,
       fields: [
+        { key: 'date', label: 'Date' },
+        { key: 'user', label: 'User' },
         { key: 'isContract', label: 'Is Contract' },
         { key: 'contractPrice', label: 'Contract Price' },
         { key: 'position', label: 'Position' },
@@ -113,6 +117,9 @@ export default {
         { key: 'actions', label: 'Actions' },
       ],
     };
+  },
+  async created() {
+    await this.fetchEntries();
   },
   methods: {
     getInitialFormState() {
@@ -130,16 +137,33 @@ export default {
         comments: '',
       };
     },
-    onSubmit() {
+    async fetchEntries() {
+      try {
+        const response = await scrappingAxios.get('/entries');
+        this.history = response.data;
+      } catch (error) {
+        console.error('Failed to fetch entries:', error);
+      }
+    },
+    async onSubmit() {
       if (this.isFormValid()) {
-        const newEntry = { ...this.localForm };
-        if (this.editingIndex !== null) {
-          this.history.splice(this.editingIndex, 1, newEntry);
-          this.editingIndex = null;
-        } else {
-          this.history.push(newEntry);
+        const todayDate = new Date().toISOString().substr(0, 10);
+        const userName = localStorage.getItem('userName');
+        const newEntry = { ...this.localForm, date: todayDate, user: userName };
+        
+        try {
+          if (this.editingIndex !== null) {
+            const response = await scrappingAxios.patch(`/entries/${this.history[this.editingIndex]._id}`, newEntry);
+            this.history.splice(this.editingIndex, 1, response.data);
+            this.editingIndex = null;
+          } else {
+            const response = await scrappingAxios.post('/entries', newEntry);
+            this.history.push(response.data);
+          }
+          this.resetForm();
+        } catch (error) {
+          console.error('Failed to save entry:', error);
         }
-        this.resetForm();
       }
     },
     isFormValid() {
@@ -165,10 +189,15 @@ export default {
     },
     editEntry(entry) {
       this.localForm = { ...entry };
-      this.editingIndex = this.history.indexOf(entry);
+      this.editingIndex = this.history.findIndex(e => e._id === entry._id);
     },
-    deleteEntry(entry) {
-      this.history = this.history.filter(item => item !== entry);
+    async deleteEntry(entry) {
+      try {
+        await scrappingAxios.delete(`/entries/${entry._id}`);
+        this.history = this.history.filter(item => item._id !== entry._id);
+      } catch (error) {
+        console.error('Failed to delete entry:', error);
+      }
     },
   },
 };
