@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { authAxios } from '@/axios';
+import { useToast } from 'vue-toastification';
 
 export default {
   data() {
@@ -29,12 +30,18 @@ export default {
   },
   methods: {
     async register() {
-      await axios.post('/api/v1/auth/signup', {
-        username: this.username,
-        email: this.email,
-        password: this.password,
-      });
-      this.$router.push('/login');
+      const toast = useToast();
+      try {
+        await authAxios.post('/signup', {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+        });
+        toast.success('Registration successful');
+        this.$router.push('/login');
+      } catch (error) {
+        toast.error(`Failed to register: ${error.response?.data?.message || error.message}`);
+      }
     },
   },
 };
